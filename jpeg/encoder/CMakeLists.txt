@@ -13,6 +13,7 @@ set(COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../common)
 include_directories(${COMMON_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(COMMON_SRC ${COMMON_DIR}/image_io.cpp)
+set(BITWRITER_SRC ${COMMON_DIR}/bitwriter.cpp)
 
 # A1: 色彩转换
 add_executable(color_transform_demo
@@ -49,7 +50,26 @@ add_executable(test_quantize
     quantize.cpp
     dct8x8.cpp)
 
+# A4: 熵编码（Zig-Zag + 游程 + 霍夫曼）
+add_executable(entropy_demo
+    entropy_demo.cpp
+    zigzag_rle.cpp
+    huffman_encode.cpp
+    quantize.cpp
+    dct8x8.cpp
+    color_transform.cpp
+    ${COMMON_SRC}
+    ${BITWRITER_SRC})
+
+add_executable(test_entropy
+    test_entropy.cpp
+    zigzag_rle.cpp
+    huffman_encode.cpp
+    dct8x8.cpp
+    ${BITWRITER_SRC})
+
 enable_testing()
 add_test(NAME color_transform COMMAND test_color_transform)
 add_test(NAME dct8x8 COMMAND test_dct8x8)
 add_test(NAME quantize COMMAND test_quantize)
+add_test(NAME entropy COMMAND test_entropy)

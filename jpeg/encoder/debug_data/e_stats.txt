@@ -1,0 +1,13 @@
+block_x 96
+block_y 32
+block_nonzero 26
+block_dc 0
+block_dc_diff 16
+block_ac_symbols 27
+block_raw_bits 512
+block_entropy_bits 173
+num_blocks 1024
+total_raw_bits 524288
+total_entropy_bits 28058
+total_stream_bytes 3508
+compress_ratio 18.686

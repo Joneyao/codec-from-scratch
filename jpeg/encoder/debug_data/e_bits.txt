@@ -1,0 +1,4 @@
+# stage bits
+raw_64coeff 512
+nonzero_only 208
+entropy_coded 173

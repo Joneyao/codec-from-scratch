@@ -1,0 +1,117 @@
+// huffman_encode.cpp — 标准霍夫曼表构建 + DC/AC 编码，照 T.81 Annex C/F/K 写。
+#include "huffman_encode.h"
+
+#include <cstdlib>
+
+namespace cfs {
+
+// 由 BITS/HUFFVAL 生成码字：T.81 Annex C（Figure C.1/C.2 的 code 生成过程）。
+// 按码长从 1 递增，同长度内按 huffval 顺序，code 依次 +1，长度变化时左移。
+HuffTable BuildHuffTable(const std::array<uint8_t, 16>& bits,
+                         const std::vector<uint8_t>& huffval) {
+    HuffTable t;
+    uint32_t code = 0;
+    size_t k = 0;
+    for (int len = 1; len <= 16; ++len) {
+        for (int i = 0; i < bits[len - 1]; ++i) {
+            uint8_t symbol = huffval[k++];
+            t.code[symbol] = code;
+            t.len[symbol] = static_cast<uint8_t>(len);
+            ++code;
+        }
+        code <<= 1;  // 进入下一个码长，整体左移一位
+    }
+    return t;
+}
+
+namespace {
+
+// T.81 Table K.3：亮度 DC 差分表的 BITS 与 HUFFVAL。
+const std::array<uint8_t, 16> kLumaDcBits = {
+    0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
+const std::vector<uint8_t> kLumaDcVals = {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+
+// T.81 Table K.5：亮度 AC 表的 BITS 与 HUFFVAL（run<<4 | size 组成的符号）。
+const std::array<uint8_t, 16> kLumaAcBits = {
+    0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7D};
+const std::vector<uint8_t> kLumaAcVals = {
+    0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12, 0x21, 0x31, 0x41,
+    0x06, 0x13, 0x51, 0x61, 0x07, 0x22, 0x71, 0x14, 0x32, 0x81, 0x91,
+    0xA1, 0x08, 0x23, 0x42, 0xB1, 0xC1, 0x15, 0x52, 0xD1, 0xF0, 0x24,
+    0x33, 0x62, 0x72, 0x82, 0x09, 0x0A, 0x16, 0x17, 0x18, 0x19, 0x1A,
+    0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x34, 0x35, 0x36, 0x37, 0x38,
+    0x39, 0x3A, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x53,
+    0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x63, 0x64, 0x65, 0x66,
+    0x67, 0x68, 0x69, 0x6A, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79,
+    0x7A, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x92, 0x93,
+    0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0xA2, 0xA3, 0xA4, 0xA5,
+    0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7,
+    0xB8, 0xB9, 0xBA, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8, 0xC9,
+    0xCA, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA, 0xE1,
+    0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7, 0xE8, 0xE9, 0xEA, 0xF1, 0xF2,
+    0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA};
+
+}  // namespace
+
+const HuffTable& StdLumaDcTable() {
+    static const HuffTable t = BuildHuffTable(kLumaDcBits, kLumaDcVals);
+    return t;
+}
+
+const HuffTable& StdLumaAcTable() {
+    static const HuffTable t = BuildHuffTable(kLumaAcBits, kLumaAcVals);
+    return t;
+}
+
+int Category(int value) {
+    int a = std::abs(value);
+    int size = 0;
+    while (a > 0) {
+        ++size;
+        a >>= 1;
+    }
+    return size;  // 0->0, 1->1, 2..3->2, 4..7->3, ...
+}
+
+uint32_t MagnitudeBits(int value, int size) {
+    if (size == 0) return 0;
+    // 正数直接取低 size 位；负数用 value-1 的补码低 size 位（T.81 F.1.2.1）。
+    uint32_t v = (value >= 0)
+                     ? static_cast<uint32_t>(value)
+                     : static_cast<uint32_t>(value - 1);
+    return v & ((1u << size) - 1u);
+}
+
+size_t EncodeBlock(int dc_diff, const std::vector<RleSymbol>& ac,
+                   const HuffTable& dc_table, const HuffTable& ac_table,
+                   BitWriter& bw) {
+    size_t before = bw.BitCount();
+
+    // --- DC：category -> 霍夫曼码 -> 幅值 bits ---
+    int dc_size = Category(dc_diff);
+    bw.WriteBits(dc_table.code[dc_size], dc_table.len[dc_size]);
+    bw.WriteBits(MagnitudeBits(dc_diff, dc_size), dc_size);
+
+    // --- AC：每个 (run, value) 组成符号 run<<4|size -> 霍夫曼码 -> 幅值 bits ---
+    for (const RleSymbol& s : ac) {
+        if (s.run == 0 && s.value == 0) {          // EOB
+            uint8_t sym = 0x00;
+            bw.WriteBits(ac_table.code[sym], ac_table.len[sym]);
+            continue;
+        }
+        if (s.run == 15 && s.value == 0) {          // ZRL
+            uint8_t sym = 0xF0;
+            bw.WriteBits(ac_table.code[sym], ac_table.len[sym]);
+            continue;
+        }
+        int size = Category(s.value);
+        uint8_t sym = static_cast<uint8_t>((s.run << 4) | size);
+        bw.WriteBits(ac_table.code[sym], ac_table.len[sym]);
+        bw.WriteBits(MagnitudeBits(s.value, size), size);
+    }
+
+    return bw.BitCount() - before;
+}
+
+}  // namespace cfs

@@ -1,0 +1,10 @@
+width 300
+height 200
+restart_interval 0
+has_exif 1
+num_components 3
+num_quant_tables 2
+num_huff_tables 4
+num_markers 12
+scan_data_length 6073
+comp0_sampling 2x2

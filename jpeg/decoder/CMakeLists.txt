@@ -54,6 +54,26 @@ add_executable(test_entropy_decode
     test_entropy_decode.cpp
     ${DECODER_A7_SRC})
 
+# A8: 完整解码器——逐 MCU 调度 + 色度上采样 + YCbCr→RGB + 裁剪 + 写 PPM。
+# 需要 common 的 image_io（PPM 读写）。
+set(IMAGE_IO_SRC ${COMMON_DIR}/image_io.cpp)
+set(DECODER_A8_SRC
+    jpeg_decoder.cpp
+    ${IMAGE_IO_SRC}
+    ${DECODER_A7_SRC})
+
+add_executable(jpeg_decoder
+    jpeg_decoder_main.cpp
+    ${DECODER_A8_SRC})
+
+# 整图往返测试额外要用编码器的 RgbToYCbCr 与 AssembleJfif。
+add_executable(test_jpeg_decoder
+    test_jpeg_decoder.cpp
+    ${ENCODER_DIR}/color_transform.cpp
+    ${ENCODER_DIR}/jfif_writer.cpp
+    ${DECODER_A8_SRC})
+
 enable_testing()
 add_test(NAME jpeg_parse COMMAND test_jpeg_parse)
 add_test(NAME entropy_decode COMMAND test_entropy_decode)
+add_test(NAME jpeg_decoder COMMAND test_jpeg_decoder)

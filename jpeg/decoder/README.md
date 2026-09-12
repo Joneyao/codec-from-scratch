@@ -8,9 +8,9 @@
 |---|---|---|
 | `jfif_parser.cpp` | A6 | 扫描 marker、解析 DQT/DHT/SOF/SOS、EXIF/APP 段 |
 | `huffman_decode.cpp` | A6 | 构建霍夫曼查表、变长解码 |
-| `idct8x8.cpp` | A7 | 8x8 反离散余弦变换 |
-| `dequantize.cpp` | A7 | 反量化、反 Zig-Zag |
-| `jpeg_decoder_main.cpp` | A8 | YCbCr→RGB、色度上采样、RST 标记容错、整合、PSNR 校对 |
+| `entropy_decode.cpp` | A7 | 熵解码一个块的 64 个系数（变长解码 + 幅值还原） |
+| `block_reconstruct.cpp` | A7 | 反 Zig-Zag、反量化、IDCT，把系数还原成 8x8 像素块 |
+| `jpeg_decoder.cpp` / `jpeg_decoder_main.cpp` | A8 | 逐 MCU 调度、DC 差分按分量独立、重启标记、色度上采样（双线性）、YCbCr→RGB、非 16 倍数裁剪、整机 + PSNR 校对 |
 
 ## 构建
 

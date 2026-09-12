@@ -36,6 +36,20 @@ add_executable(test_dct8x8
     test_dct8x8.cpp
     dct8x8.cpp)
 
+# A3: 量化
+add_executable(quantize_demo
+    quantize_demo.cpp
+    quantize.cpp
+    dct8x8.cpp
+    color_transform.cpp
+    ${COMMON_SRC})
+
+add_executable(test_quantize
+    test_quantize.cpp
+    quantize.cpp
+    dct8x8.cpp)
+
 enable_testing()
 add_test(NAME color_transform COMMAND test_color_transform)
 add_test(NAME dct8x8 COMMAND test_dct8x8)
+add_test(NAME quantize COMMAND test_quantize)

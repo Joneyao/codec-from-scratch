@@ -1,0 +1,12 @@
+block_x 96
+block_y 32
+nonzero_dct 49
+nonzero_q90 40
+step_dc_q90 3
+step_hf_q90 20
+nonzero_q50 26
+step_dc_q50 16
+step_hf_q50 99
+nonzero_q10 13
+step_dc_q10 80
+step_hf_q10 255

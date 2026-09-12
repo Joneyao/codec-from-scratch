@@ -6,3 +6,9 @@ build/
 *.yuv
 *.raw
 .DS_Store
+
+# 编码器产出的二进制图片属于可再生成的产物，不入库。
+# 保留 chart_data 下的 *.txt（配图脚本引用的真实测量数据）。
+jpeg/encoder/out.jpg
+jpeg/encoder/chart_data/*.jpg
+jpeg/encoder/chart_data/*.png

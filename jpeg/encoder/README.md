@@ -17,11 +17,25 @@
 ## 构建
 
 ```bash
-mkdir build && cd build
-cmake .. && make
-./jpeg_encoder ../../samples/lena.ppm output.jpg --quality 80
+cmake -S . -B build && cmake --build build
+ctest --test-dir build            # 5 组单元测试
+
+# 编码：PPM 进，.jpg 出，第三个参数是 quality(1-100，默认 90)
+./build/encoder_main ../../samples/test_pattern.ppm out.jpg 90
 ```
 
 ## 验证方式
 
-输出的 .jpg 用系统自带图片查看器和 libjpeg-turbo 的 `djpeg` 分别解码，确认能被通用解码器正确打开；再和 libjpeg-turbo 编码同一张图的结果做文件大小和 PSNR 对比。
+输出的 .jpg 用系统图片查看器、`ffmpeg`/`ffprobe`、以及 libjpeg（Pillow 底层即
+libjpeg-turbo）分别解码，确认能被通用解码器正确打开；再和 libjpeg 编码同一张图的
+结果做文件大小对比。若装了 libjpeg-turbo，也可以用 `djpeg out.jpg > /dev/null` 验证。
+
+`verify_jpg.py` 把上述验证一键跑完：编多个 quality 的 .jpg，逐个用 libjpeg 解码，
+测量文件大小并对原图算 PSNR，结果写入 `chart_data/`（供文章配图脚本引用）。
+
+```bash
+python3 verify_jpg.py ./build/encoder_main ../../samples/test_pattern.ppm chart_data/
+```
+
+> `out.jpg` 与 `chart_data/` 下的图片属于可再生成的产物，已在 `.gitignore` 中忽略；
+> 仓库只保留 `chart_data/*.txt` 这类小体积的真实测量数据。

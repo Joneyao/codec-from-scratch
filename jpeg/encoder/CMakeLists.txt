@@ -68,8 +68,30 @@ add_executable(test_entropy
     dct8x8.cpp
     ${BITWRITER_SRC})
 
+# A5: JFIF 文件组装 + 完整编码器
+add_executable(encoder_main
+    encoder_main.cpp
+    jfif_writer.cpp
+    zigzag_rle.cpp
+    huffman_encode.cpp
+    quantize.cpp
+    dct8x8.cpp
+    color_transform.cpp
+    ${COMMON_SRC}
+    ${BITWRITER_SRC})
+
+add_executable(test_jfif
+    test_jfif.cpp
+    jfif_writer.cpp
+    zigzag_rle.cpp
+    huffman_encode.cpp
+    quantize.cpp
+    dct8x8.cpp
+    ${BITWRITER_SRC})
+
 enable_testing()
 add_test(NAME color_transform COMMAND test_color_transform)
 add_test(NAME dct8x8 COMMAND test_dct8x8)
 add_test(NAME quantize COMMAND test_quantize)
 add_test(NAME entropy COMMAND test_entropy)
+add_test(NAME jfif COMMAND test_jfif)

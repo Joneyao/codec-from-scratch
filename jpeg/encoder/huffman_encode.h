@@ -37,8 +37,26 @@ HuffTable BuildHuffTable(const std::array<uint8_t, 16>& bits,
                          const std::vector<uint8_t>& huffval);
 
 // Annex K 的标准亮度表（构建一次即可复用）。
+// 亮度：Table K.3 (DC) / Table K.5 (AC)。
 const HuffTable& StdLumaDcTable();
 const HuffTable& StdLumaAcTable();
+
+// 色度表：Table K.4 (DC) / Table K.6 (AC)。Cb/Cr 共用这一组。
+// A5 组装完整 JFIF 时，色度分量的 DC/AC 熵编码要用这两张表。
+const HuffTable& StdChromaDcTable();
+const HuffTable& StdChromaAcTable();
+
+// 把标准表的 BITS / HUFFVAL 原始描述暴露出来，供 A5 写 DHT 段时直接落盘。
+// 返回的 pair.first = 16 个 BITS（码长 1..16 各有几个符号），
+// pair.second = 按码长升序排列的 HUFFVAL 符号列表。
+const std::array<uint8_t, 16>& StdLumaDcBits();
+const std::vector<uint8_t>& StdLumaDcVals();
+const std::array<uint8_t, 16>& StdLumaAcBits();
+const std::vector<uint8_t>& StdLumaAcVals();
+const std::array<uint8_t, 16>& StdChromaDcBits();
+const std::vector<uint8_t>& StdChromaDcVals();
+const std::array<uint8_t, 16>& StdChromaAcBits();
+const std::vector<uint8_t>& StdChromaAcVals();
 
 // 计算一个（有符号）系数的 category（SSSS）：表示它需要几个 bit 才能编码幅值。
 // 定义见 T.81 Table F.1 / F.2：0->0, ±1->1, ±2..3->2, ±4..7->3 ... 依此类推。

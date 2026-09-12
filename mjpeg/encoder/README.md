@@ -1,6 +1,6 @@
 # mjpeg/encoder
 
-MJPEG（Motion JPEG）编码器，对应系列文章《MJPEG：视频编码的"逃课"方案》。复用 `jpeg/encoder` 的全部模块，逐帧独立编码，再做简单的容器封装。
+MJPEG（Motion JPEG）编码器，对应系列文章 B1。复用 `jpeg/encoder` 的全部模块，逐帧独立编码，再做简单的容器封装。MJPEG 解码器见 `mjpeg/decoder`（对应 B2）。
 
 ## 模块与文章对应关系
 

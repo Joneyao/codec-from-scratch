@@ -14,9 +14,11 @@ codec-from-scratch/
 │   ├── decoder/        # H.264 解码器：NAL 解析 → 熵解码 → 预测 → 变换 → 滤波
 │   └── encoder/        # H.264 编码器：预测 → 变换/量化 → 熵编码 → 码流封装
 ├── jpeg/
-│   └── encoder/        # 基线 JPEG 编码器：DCT → 量化 → 霍夫曼编码
+│   ├── encoder/        # 基线 JPEG 编码器：DCT → 量化 → 霍夫曼编码
+│   └── decoder/        # 基线 JPEG 解码器：解析真实 .jpg → IDCT → 还原像素
 ├── mjpeg/
-│   └── encoder/        # MJPEG：逐帧 JPEG + 简单容器封装
+│   ├── encoder/        # MJPEG 编码：逐帧 JPEG + AVI 容器封装
+│   └── decoder/        # MJPEG 解码：解 AVI 容器 + 逐帧 JPEG 解码
 ├── common/             # 位读写、YUV/RGB 转换等共享工具
 ├── tests/              # 单元测试 + 与参考实现（ffmpeg/libjpeg）的像素级对比
 ├── samples/            # 测试用的短视频/图片样本

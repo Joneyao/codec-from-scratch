@@ -6,5 +6,3 @@ build/
 *.yuv
 *.raw
 .DS_Store
-*.pdf
-docs/spec-reference/

@@ -40,5 +40,20 @@ add_executable(test_jpeg_parse
     test_jpeg_parse.cpp
     ${DECODER_A6_SRC})
 
+# A7: 熵解码 + 反量化 + 反 Zig-Zag + IDCT，把比特流还原成 8x8 像素块。
+set(DECODER_A7_SRC
+    entropy_decode.cpp
+    block_reconstruct.cpp
+    ${DECODER_A6_SRC})
+
+add_executable(decode_block_demo
+    decode_block_demo.cpp
+    ${DECODER_A7_SRC})
+
+add_executable(test_entropy_decode
+    test_entropy_decode.cpp
+    ${DECODER_A7_SRC})
+
 enable_testing()
 add_test(NAME jpeg_parse COMMAND test_jpeg_parse)
+add_test(NAME entropy_decode COMMAND test_entropy_decode)

@@ -1,0 +1,8 @@
+width 256
+height 256
+rgb_bytes 196608
+ycbcr_444_bytes 196608
+ycbcr_420_bytes 98304
+y_bytes 65536
+chroma_444_bytes 131072
+chroma_420_bytes 32768

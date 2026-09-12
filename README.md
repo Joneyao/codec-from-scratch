@@ -50,6 +50,13 @@ mkdir build && cd build
 cmake .. && make
 ```
 
+## 开发约定
+
+- **代码先行 + 真实数据配图：** 每个模块先实现、编译、跑通，调试过程产生的真实中间数据（系数矩阵、量化前后、PSNR 曲线等）直接作为配套文章的配图，可追溯到代码输出。
+- **参考不摘抄：** 参考 libjpeg-turbo / h264bitstream / minih264 / x264 / JM / FFmpeg 的思路和边界处理，代码从 spec 条款重新实现，不复制 GPL/LGPL 源码。用参考实现做逐字节/逐像素对照验证。
+- **项目级 skills/agents：** 开发中沉淀的可复用工作流存放在 `.claude/skills/` 和 `.claude/agents/`，随仓库版本管理。
+- **superpowers 工作流：** brainstorming → writing-plans → TDD → systematic-debugging → verification。独立模块用 subagent 并行开发。
+
 ## License
 
-MIT License，见 [LICENSE](LICENSE)。标准文本本身（ITU-T Recommendations）版权归 ITU 所有，不包含在本仓库内。
+MIT License，见 [LICENSE](LICENSE)。标准文本本身（ITU-T Recommendations）版权归 ITU 所有，收录于 `docs/spec-reference/` 仅供学习参考。

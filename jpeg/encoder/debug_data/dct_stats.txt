@@ -1,0 +1,8 @@
+block_x 96
+block_y 32
+dc_value 3.00
+energy_total 455184.0
+energy_dc_pct 0.00
+energy_low4x4_pct 88.65
+nonzero_all 49
+nonzero_rounded 49

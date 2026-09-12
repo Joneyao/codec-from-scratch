@@ -25,5 +25,17 @@ add_executable(test_color_transform
     color_transform.cpp
     ${COMMON_SRC})
 
+# A2: 8x8 DCT
+add_executable(dct8x8_demo
+    dct8x8_demo.cpp
+    dct8x8.cpp
+    color_transform.cpp
+    ${COMMON_SRC})
+
+add_executable(test_dct8x8
+    test_dct8x8.cpp
+    dct8x8.cpp)
+
 enable_testing()
 add_test(NAME color_transform COMMAND test_color_transform)
+add_test(NAME dct8x8 COMMAND test_dct8x8)

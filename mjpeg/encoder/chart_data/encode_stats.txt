@@ -1,0 +1,4 @@
+MJPEG: 20 frames @ 192x144, quality=80, fps=10
+  AVI file = 111644 bytes
+  JPEG payload total = 110923 bytes (min=4906, max=5767, avg=5546)
+per-frame bytes: 4906 5058 5283 5325 5629 5717 5767 5614 5762 5630 5556 5530 5714 5595 5611 5575 5690 5741 5758 5462

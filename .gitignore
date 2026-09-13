@@ -12,3 +12,10 @@ build/
 jpeg/encoder/out.jpg
 jpeg/encoder/chart_data/*.jpg
 jpeg/encoder/chart_data/*.png
+
+# MJPEG 编码器产出：.avi 与解出的预览帧可再生成，不入库；
+# 保留 chart_data/*.txt（每帧字节数等真实测量数据，配图脚本要读）。
+mjpeg/encoder/out.avi
+mjpeg/encoder/chart_data/*.png
+# ffmpeg 生成的测试帧序列可一条命令再生成，不入库。
+samples/mjpeg_frames/

@@ -71,6 +71,7 @@ add_executable(test_entropy
 # A5: JFIF 文件组装 + 完整编码器
 add_executable(encoder_main
     encoder_main.cpp
+    jpeg_encode_api.cpp
     jfif_writer.cpp
     zigzag_rle.cpp
     huffman_encode.cpp

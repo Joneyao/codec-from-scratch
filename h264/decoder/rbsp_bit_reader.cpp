@@ -24,6 +24,11 @@ uint32_t RbspBitReader::ReadBits(int n) {
     return v;
 }
 
+void RbspBitReader::SkipBits(size_t n) {
+    bit_pos_ += n;
+    if ((bit_pos_ >> 3) > len_) overrun_ = true;
+}
+
 uint32_t RbspBitReader::ReadUE() {
     // 9.1: leadingZeroBits = -1; for(b=0; !b; leadingZeroBits++) b = read_bits(1);
     // 即：一直读 0，直到读到第一个 1，数出前面有几个 0。

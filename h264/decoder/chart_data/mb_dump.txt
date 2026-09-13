@@ -1,0 +1,15 @@
+# key value
+width_in_mbs 11
+height_in_mbs 9
+total_mbs 99
+slice_type 7
+slice_category I
+is_idr 1
+first_mb_in_slice 0
+frame_num 0
+slice_qp 26
+first_mb_type 0
+first_mb_class I_4x4
+intra_mbs 99
+inter_mbs 0
+skip_mbs 0

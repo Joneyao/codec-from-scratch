@@ -33,6 +33,9 @@ class RbspBitReader {
     // 读 n 位（0..32），高位先读，拼成无符号整数。u(n)。
     uint32_t ReadBits(int n);
 
+    // 跳过 n 位（用于对齐到已知比特位置，如 slice header 之后的 slice_data）。
+    void SkipBits(size_t n);
+
     // ue(v)：无符号指数哥伦布解码（ITU-T H.264 9.1）。
     //   先数前导 0 的个数 leadingZeroBits，
     //   再读同样多的位作为 suffix，

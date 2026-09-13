@@ -73,6 +73,18 @@ add_executable(test_transform
     test_transform.cpp
     transform_quant.cpp)
 
+# C6：CAVLC 残差解码（从码流解出量化系数）。上下文自适应选表 + 5 个语法元素。
+# demo 用教科书标准样例把解码逻辑跑通，纯熵解码不依赖前面码流解析模块。
+add_executable(cavlc_demo
+    cavlc_demo.cpp
+    cavlc_decode.cpp
+    rbsp_bit_reader.cpp)
+
+add_executable(test_cavlc
+    test_cavlc.cpp
+    cavlc_decode.cpp
+    rbsp_bit_reader.cpp)
+
 enable_testing()
 # 解析真实 test.h264（相对 build 目录：h264/decoder/build/ -> ../../samples/）。
 add_test(NAME nal_splitter
@@ -85,3 +97,5 @@ add_test(NAME macroblock
 add_test(NAME intra_predict COMMAND test_intra_predict)
 # C5：整数反变换 + 反量化校验（确定性/DC-only/QP 翻倍/LevelScale，可手算核对）。
 add_test(NAME transform COMMAND test_transform)
+# C6：CAVLC 残差解码校验（coeff_token/上下文选表/nC 推导/整块还原，标准样例）。
+add_test(NAME cavlc COMMAND test_cavlc)

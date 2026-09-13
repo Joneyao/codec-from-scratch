@@ -63,6 +63,16 @@ add_executable(test_intra_predict
     test_intra_predict.cpp
     intra_predict.cpp)
 
+# C5：4x4 整数反变换 + 反量化（残差重建）。纯数学，不依赖码流解析模块。
+# demo 造一组真实量化系数，走反量化+反变换，并与浮点 DCT 对照确定性。
+add_executable(transform_demo
+    transform_demo.cpp
+    transform_quant.cpp)
+
+add_executable(test_transform
+    test_transform.cpp
+    transform_quant.cpp)
+
 enable_testing()
 # 解析真实 test.h264（相对 build 目录：h264/decoder/build/ -> ../../samples/）。
 add_test(NAME nal_splitter
@@ -73,3 +83,5 @@ add_test(NAME macroblock
          COMMAND test_macroblock ${CMAKE_CURRENT_SOURCE_DIR}/../../samples/test.h264)
 # C4：帧内预测公式校验（构造输入，可手算核对，不需要外部文件）。
 add_test(NAME intra_predict COMMAND test_intra_predict)
+# C5：整数反变换 + 反量化校验（确定性/DC-only/QP 翻倍/LevelScale，可手算核对）。
+add_test(NAME transform COMMAND test_transform)

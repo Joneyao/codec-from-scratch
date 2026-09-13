@@ -85,6 +85,18 @@ add_executable(test_cavlc
     cavlc_decode.cpp
     rbsp_bit_reader.cpp)
 
+# C7：运动补偿 + 亚像素插值（帧间预测）。MV 中值预测 + 亮度 6-tap 半像素
+# + 1/4 像素平均 + 色度 1/8 双线性（spec 8.4）。
+# demo 读真实 PPM 当参考帧，对比整/半/四分之一像素 MV 的预测残差；纯预测逻辑。
+add_executable(motion_demo
+    motion_demo.cpp
+    motion_compensate.cpp
+    ../../common/image_io.cpp)
+
+add_executable(test_motion
+    test_motion.cpp
+    motion_compensate.cpp)
+
 enable_testing()
 # 解析真实 test.h264（相对 build 目录：h264/decoder/build/ -> ../../samples/）。
 add_test(NAME nal_splitter
@@ -99,3 +111,5 @@ add_test(NAME intra_predict COMMAND test_intra_predict)
 add_test(NAME transform COMMAND test_transform)
 # C6：CAVLC 残差解码校验（coeff_token/上下文选表/nC 推导/整块还原，标准样例）。
 add_test(NAME cavlc COMMAND test_cavlc)
+# C7：运动补偿校验（6-tap 半像素/1/4 像素平均/MV 中值/整像素搬块/色度双线性）。
+add_test(NAME motion COMMAND test_motion)

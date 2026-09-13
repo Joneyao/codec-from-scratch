@@ -97,6 +97,18 @@ add_executable(test_motion
     test_motion.cpp
     motion_compensate.cpp)
 
+# C8：去块滤波(in-loop deblocking，spec 8.7)。bS 推导 + α/β/tC0 查表
+# + bS<4 弱滤波 + bS=4 强滤波。demo 读真实 PPM 造块效应重建行，展示
+# "块效应假边界被磨平 vs 真实图像边缘被保留"；纯像素处理不依赖码流解析。
+add_executable(deblock_demo
+    deblock_demo.cpp
+    deblock_filter.cpp
+    ../../common/image_io.cpp)
+
+add_executable(test_deblock
+    test_deblock.cpp
+    deblock_filter.cpp)
+
 enable_testing()
 # 解析真实 test.h264（相对 build 目录：h264/decoder/build/ -> ../../samples/）。
 add_test(NAME nal_splitter
@@ -113,3 +125,5 @@ add_test(NAME transform COMMAND test_transform)
 add_test(NAME cavlc COMMAND test_cavlc)
 # C7：运动补偿校验（6-tap 半像素/1/4 像素平均/MV 中值/整像素搬块/色度双线性）。
 add_test(NAME motion COMMAND test_motion)
+# C8：去块滤波校验（bS 推导/α-β-tC0 查表/保边/平滑/强滤波/色度，可手算核对）。
+add_test(NAME deblock COMMAND test_deblock)

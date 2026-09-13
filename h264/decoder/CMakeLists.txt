@@ -20,7 +20,22 @@ add_executable(test_nal_splitter
     test_nal_splitter.cpp
     nal_splitter.cpp)
 
+# C2：指数哥伦布 + SPS/PPS 解析（读出真实分辨率）。
+add_executable(sps_pps_demo
+    sps_pps_demo.cpp
+    sps_pps_parser.cpp
+    rbsp_bit_reader.cpp
+    nal_splitter.cpp)
+
+add_executable(test_sps_pps
+    test_sps_pps.cpp
+    sps_pps_parser.cpp
+    rbsp_bit_reader.cpp
+    nal_splitter.cpp)
+
 enable_testing()
 # 解析真实 test.h264（相对 build 目录：h264/decoder/build/ -> ../../samples/）。
 add_test(NAME nal_splitter
          COMMAND test_nal_splitter ${CMAKE_CURRENT_SOURCE_DIR}/../../samples/test.h264)
+add_test(NAME sps_pps
+         COMMAND test_sps_pps ${CMAKE_CURRENT_SOURCE_DIR}/../../samples/test.h264)

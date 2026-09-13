@@ -1,0 +1,17 @@
+# key value
+profile_idc 66
+level_idc 10
+pic_width_in_mbs_minus1 10
+pic_height_in_map_units_minus1 8
+frame_mbs_only_flag 1
+frame_cropping_flag 0
+crop_lrtb 0 0 0 0
+pic_width_in_mbs 11
+frame_height_in_mbs 9
+coded_w 176
+coded_h 144
+width 176
+height 144
+num_ref_frames 3
+entropy CAVLC
+pic_init_qp 23

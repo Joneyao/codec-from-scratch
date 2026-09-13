@@ -17,6 +17,10 @@ jpeg/encoder/chart_data/*.png
 # 保留 chart_data/*.txt（每帧字节数等真实测量数据，配图脚本要读）。
 mjpeg/encoder/out.avi
 mjpeg/encoder/chart_data/*.png
+
+# B3 对比实验的中间产物（.avi/.mp4）可由 compare 脚本再生成，不入库；
+# 保留 chart_data/compare.json（真实测量数据，配图脚本要读）。
+mjpeg/tools/work/
 # ffmpeg 生成的测试帧序列可一条命令再生成，不入库。
 samples/mjpeg_frames/
 

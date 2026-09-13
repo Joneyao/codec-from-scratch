@@ -19,3 +19,10 @@ mjpeg/encoder/out.avi
 mjpeg/encoder/chart_data/*.png
 # ffmpeg 生成的测试帧序列可一条命令再生成，不入库。
 samples/mjpeg_frames/
+
+# MJPEG 解码器产出：解出的帧序列、抠出的 JPEG、ffmpeg 对照帧都可一条命令
+# 再生成，不入库；保留 chart_data/*.txt（逐帧 PSNR 等真实测量数据）。
+mjpeg/decoder/out_frames/
+mjpeg/decoder/ff_frames/
+mjpeg/decoder/jpeg_frames/
+mjpeg/decoder/chart_data/*.png

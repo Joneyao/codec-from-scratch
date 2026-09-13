@@ -72,11 +72,19 @@ def main():
         restart_marker_blocks=8,
     )
 
+    # camera_photo.ppm：把上面那张"照片"另存一份无损 PPM（P6），供 H.264 帧内
+    # 预测 demo(C4) 读入。demo 只有一个最小 PPM 读取器，不含 JPEG 解码，所以直接
+    # 用无损 PPM 喂真实像素，保证 SAD 数据可复现（同一张图、同一批像素）。
+    photo.save(os.path.join(HERE, "camera_photo.ppm"), format="PPM")
+
     for name in ("camera_photo.jpg", "gradient.jpg", "restart.jpg"):
         p = os.path.join(HERE, name)
         im = Image.open(p)
         print(f"{name}: {im.size} {im.mode} {os.path.getsize(p)} bytes "
               f"exif={'yes' if im.info.get('exif') else 'no'}")
+    pp = os.path.join(HERE, "camera_photo.ppm")
+    print(f"camera_photo.ppm: {Image.open(pp).size} "
+          f"{os.path.getsize(pp)} bytes")
 
 
 if __name__ == "__main__":

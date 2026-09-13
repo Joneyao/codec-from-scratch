@@ -1,0 +1,17 @@
+# idx type_name type_id ref_idc sc_len nal_offset nal_size rbsp_size ep3b
+0 SPS 7 3 4 4 22 21 1
+1 PPS 8 3 4 30 5 5 0
+2 SEI 6 0 3 38 621 621 0
+3 IDR slice 5 3 3 662 3219 3219 0
+4 non-IDR slice 1 2 4 3885 1275 1275 0
+5 non-IDR slice 1 2 4 5164 1352 1352 0
+6 non-IDR slice 1 2 4 6520 1297 1297 0
+7 non-IDR slice 1 2 4 7821 1272 1272 0
+8 SPS 7 3 4 9097 22 21 1
+9 PPS 8 3 4 9123 5 5 0
+10 IDR slice 5 3 3 9131 4196 4195 1
+11 non-IDR slice 1 2 4 13331 1048 1048 0
+12 non-IDR slice 1 2 4 14383 1062 1062 0
+13 non-IDR slice 1 2 4 15449 919 919 0
+14 non-IDR slice 1 2 4 16372 1076 1076 0
+# total_ep3b 3

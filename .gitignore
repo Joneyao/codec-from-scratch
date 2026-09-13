@@ -30,3 +30,8 @@ mjpeg/decoder/out_frames/
 mjpeg/decoder/ff_frames/
 mjpeg/decoder/jpeg_frames/
 mjpeg/decoder/chart_data/*.png
+
+# H.264 解码器：build 产物与配图 PNG 可再生成，不入库；
+# 保留 chart_data/*.txt（nal_splitter_demo 写出的逐 NAL 真实测量数据，配图脚本要读）
+# 与 samples/test.h264（体积小，是 ctest 的输入 fixture，一条 ffmpeg 命令可再生成）。
+h264/decoder/chart_data/*.png

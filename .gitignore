@@ -35,3 +35,6 @@ mjpeg/decoder/chart_data/*.png
 # 保留 chart_data/*.txt（nal_splitter_demo 写出的逐 NAL 真实测量数据，配图脚本要读）
 # 与 samples/test.h264（体积小，是 ctest 的输入 fixture，一条 ffmpeg 命令可再生成）。
 h264/decoder/chart_data/*.png
+# H.264 编码器：build 产物全局已忽略；chart_data 下的 *.png 可再生成不入库，
+# 保留 *.txt（demo 导出的真实测量数据，配图脚本要读）。
+h264/encoder/chart_data/*.png

@@ -1,0 +1,20 @@
+# H.264 forward transform/quant demo（真实残差）
+source builtin_natural_residual
+qP 28
+residual
+31 24 -9 -14
+18 12 -6 -11
+-8 -5 7 10
+-13 -9 12 16
+forward_W
+55 72 3 -9
+61 528 5 -81
+21 16 1 -7
+8 -46 0 -8
+quant_c
+1 1 0 0
+0 3 0 0
+0 0 0 0
+0 0 0 0
+nonzero_W 15
+nonzero_c 3

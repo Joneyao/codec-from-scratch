@@ -1,0 +1,24 @@
+# H.264 CAVLC 正向编码 —— 一个真实 4x4 量化块的比特分解
+# 块（zigzag 扫描顺序）: 13 -3 -4 2 1 2 0 -1 1 0 0 0 0 0 0 0
+nc	2
+total_coeff	8
+trailing_ones	2
+total_zeros	1
+roundtrip_ok	1
+
+# 五个语法元素各自的比特数
+bits_coeff_token	11
+bits_trailing_ones_sign	2
+bits_level	24
+bits_total_zeros	4
+bits_run_before	2
+bits_total	43
+
+# 压缩效果：原始系数 vs 编码比特
+coeff_count	16
+nonzero_count	8
+raw_bits_32bit	512
+raw_bits_9bit	144
+encoded_bits	43
+compress_ratio_vs_32bit	11.91
+compress_ratio_vs_9bit	3.35

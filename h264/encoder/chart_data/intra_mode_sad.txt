@@ -1,0 +1,21 @@
+# H.264 帧内模式决策 SAD 数据（真实图片，可用于 matplotlib）
+# image ../../../samples/test_pattern.ppm 256x256
+[intra4x4] block=(41,9)
+V 18
+H 1038
+DC 970
+DDL 1105
+DDR 1139
+VR 1099
+HD 1038
+VL 963
+HU 1006
+[intra16x16] block=(128,128)
+V 0
+H 49920
+DC 25088
+Plane 24480
+[best_vs_second]
+best V 18
+second VL 963
+gap 945

@@ -1,0 +1,9 @@
+# nal_type name bytes
+7 SPS 13
+8 PPS 8
+5 IDR_slice 3074
+# total_stream_bytes 3095
+# coded_size 304x208 real_size 300x200
+# qp 28 macroblocks 247 nonzero_luma_coeffs 1152
+# dropped_residual_blocks 0 of 3952
+# luma_psnr_pre_deblock_db 36.28

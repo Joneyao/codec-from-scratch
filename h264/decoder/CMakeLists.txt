@@ -109,6 +109,22 @@ add_executable(test_deblock
     test_deblock.cpp
     deblock_filter.cpp)
 
+# C9：完整最小解码器（把前面几篇的模块串起来，端到端解出 YUV）。
+# 复用 NAL 切分、SPS/PPS、slice header、位读取、帧内预测、整数反变换、
+# CAVLC 4x4、去块滤波，并补齐 CBP/色度/DC 变换等胶水（都在 h264_decoder.cpp）。
+add_executable(h264_decoder
+    decoder_main.cpp
+    h264_decoder.cpp
+    nal_splitter.cpp
+    sps_pps_parser.cpp
+    rbsp_bit_reader.cpp
+    slice_header.cpp
+    macroblock_layout.cpp
+    intra_predict.cpp
+    transform_quant.cpp
+    cavlc_decode.cpp
+    deblock_filter.cpp)
+
 enable_testing()
 # 解析真实 test.h264（相对 build 目录：h264/decoder/build/ -> ../../samples/）。
 add_test(NAME nal_splitter

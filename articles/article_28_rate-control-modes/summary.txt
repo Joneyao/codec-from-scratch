@@ -1,0 +1,8 @@
+# 同一素材(640x360, 150帧, 5s)不同码率控制模式实测 (ffmpeg libx264 preset medium)
+# mode   total_bytes  bitrate_bps  psnr_avg_db
+crf18    741626       1186601      49.17
+crf23    500280        800448      44.19
+crf28    271031        433649      39.34
+cbr2m   1237938       1980700      57.54
+vbr2m   1095476       1752761      54.30
+# 说明: CRF 控质量(码率随内容浮动); CBR/VBR 控码率(2M预算下质量更高因素材可压)

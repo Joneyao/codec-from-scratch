@@ -1,0 +1,10 @@
+# ffprobe 读色彩元数据实测（真实输出）
+# --- 带完整标记的文件 (编码时 -colorspace bt709 -color_range tv) ---
+color_range=tv
+color_space=bt709
+# --- 不加标记的文件（编码器默认，什么都没写）---
+color_range=unknown
+color_space=unknown
+color_primaries=unknown
+color_transfer=unknown
+# 结论：不标记 => 下游播放器只能猜 => 猜错就发灰/偏色

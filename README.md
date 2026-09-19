@@ -34,8 +34,9 @@ codec-from-scratch/
 - **B · MJPEG 编解码（3 篇）** — 逐帧 JPEG，理解"没有帧间预测"的代价
 - **C · H.264 解码（9 篇）** — 从 NAL 切分到去块滤波，先学会读码流
 - **D · H.264 编码（6 篇）** — 模式决策 / 变换量化 / 熵编码 / 运动估计 / 码率控制 / 封装
+- **E · 实战篇（6 篇）** — 工程里天天见的参数与踩坑：色彩发灰 / 码率控制 / GOP-seek / Profile-Level / B帧时间戳 / 码率分配。配图数据来自 ffmpeg/ffprobe 实测
 
-完整篇目、代码对应关系和诚实边界说明见 [articles/README.md](articles/README.md)。每篇遵循"代码先行 + 真实数据配图"：图上每个数字都是代码真跑出来的。
+主线 26 篇遵循"代码先行 + 真实数据配图"，实战 6 篇用 ffmpeg 实测数据。完整篇目、代码对应关系和诚实边界说明见 [articles/README.md](articles/README.md)。
 
 ## 参考资料
 

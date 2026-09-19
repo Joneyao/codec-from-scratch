@@ -1,0 +1,84 @@
+========================================================================
+E4 Profile 与 Level — Profile 实测数据（ffmpeg N-117623-g3565903c63）
+========================================================================
+所有数字均由 ffmpeg/ffprobe 对真实文件实测得出。中间视频在 work/ 下生成，
+文章完成后已删除。复现命令见本文件末尾「复现步骤」。
+
+------------------------------------------------------------------------
+[1] 素材与编码
+------------------------------------------------------------------------
+源视频 srcHD.mp4：1280x720, 25fps, 6s（gradients 大面积平滑 + testsrc2 细节
+叠加 overlay 0.25，format=yuv420p）—— 兼具平滑区（利于 8x8 变换）与纹理运动。
+源大小：545447 bytes
+
+同一素材、同一固定量化（-qp 26, preset medium）编成三个 profile：
+  ffmpeg -y -i srcHD.mp4 -c:v libx264 -preset medium -qp 26 -profile:v baseline hd_baseline.mp4
+  ffmpeg -y -i srcHD.mp4 -c:v libx264 -preset medium -qp 26 -profile:v main     hd_main.mp4
+  ffmpeg -y -i srcHD.mp4 -c:v libx264 -preset medium -qp 26 -profile:v high     hd_high.mp4
+
+------------------------------------------------------------------------
+[2] ffprobe 读出的 profile / level / B 帧（真实值）
+------------------------------------------------------------------------
+命令：ffprobe -v error -select_streams v:0 \
+        -show_entries stream=codec_name,profile,level,width,height,has_b_frames \
+        -of default=noprint_wrappers=1 hd_<p>.mp4
+
+hd_baseline.mp4 : codec=h264  profile=Constrained Baseline  level=31  1280x720  has_b_frames=0
+hd_main.mp4     : codec=h264  profile=Main                  level=31  1280x720  has_b_frames=2
+hd_high.mp4     : codec=h264  profile=High                  level=31  1280x720  has_b_frames=2
+
+------------------------------------------------------------------------
+[3] SPS 里的 profile_idc / level_idc 真实字节
+------------------------------------------------------------------------
+从 Annex B 裸流里定位 SPS NAL（type 7），读其后的 profile_idc 与 level_idc 字节：
+  baseline : profile_idc = 66   level_idc = 31  (Level 3.1)
+  main     : profile_idc = 77   level_idc = 31  (Level 3.1)
+  high     : profile_idc = 100  level_idc = 31  (Level 3.1)
+
+对照 ITU-T H.264 Table 7-2 profile_idc 取值：66=Baseline, 77=Main, 100=High。
+这就是手搓系列 D6 在生成 SPS 时亲手写进码流的两个字节。
+
+------------------------------------------------------------------------
+[4] 各 profile 实际启用的编码工具（从 x264 编码日志逐项摘录）
+------------------------------------------------------------------------
+                 CABAC   8x8dct   B帧(bframes)   加权P(weightp)
+  baseline       0       0        0              0
+  main           1       0        3              2
+  high           1       1        3              2
+
+日志原文关键片段：
+  baseline: options: cabac=0 ... 8x8dct=0 ... bframes=0 weightp=0 ... rc=cqp qp=26
+  main    : options: cabac=1 ... 8x8dct=0 ... bframes=3 ... weightp=2 ... rc=cqp qp=26
+  high    : options: cabac=1 ... 8x8dct=1 ... bframes=3 ... weightp=2 ... rc=cqp qp=26
+
+结论：Baseline 关掉 CABAC / 8x8 变换 / B 帧；Main 打开 CABAC + B 帧但仍无 8x8；
+High 在 Main 基础上再加 8x8 变换。这就是三个 profile「工具集」的真实差别。
+
+------------------------------------------------------------------------
+[5] 同素材同 QP 的文件体积（工具越强，压得越小）
+------------------------------------------------------------------------
+命令：stat -c%s hd_<p>.mp4
+  baseline : 428795 bytes   (基准, +13.8% vs high)
+  main     : 383127 bytes   (-10.65% vs baseline)
+  high     : 376933 bytes   (-12.10% vs baseline, 最小)
+
+差值：baseline 比 high 大 51862 bytes（约 +13.76%）。
+最大的一跳来自 baseline->main（打开 CABAC + B 帧，-10.65%）；
+main->high（再加 8x8 变换）只再省 -1.62%，边际收益递减但方向一致。
+
+（另一组 mandelbrot QP=26 实测：baseline 1752582 / main 1213997 / high 1214299，
+ 同样呈 baseline >> main≈high —— 说明「大跳在 CABAC+B 帧」这个结论跨素材成立。）
+
+========================================================================
+复现步骤（work/ 下执行，完成后删除 work/）
+========================================================================
+1) 生成源：
+   ffmpeg -y -f lavfi -i "gradients=size=1280x720:rate=25:speed=0.03" \
+     -f lavfi -i "testsrc2=size=1280x720:rate=25" \
+     -filter_complex "[0:v][1:v]blend=all_mode=overlay:all_opacity=0.25,format=yuv420p" \
+     -t 6 srcHD.mp4
+2) 三 profile 编码（见 [1]）
+3) ffprobe 读 profile/level（见 [2]）
+4) SPS profile_idc（见 [3] python 片段）
+5) 工具集（grep cabac/8x8dct/bframes hd_<p>.log，见 [4]）
+6) 体积（stat -c%s，见 [5]）

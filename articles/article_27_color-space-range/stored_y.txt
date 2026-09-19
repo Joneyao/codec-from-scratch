@@ -1,0 +1,4 @@
+# 同一 RGB 源(黑0/灰128/白255)按不同 range 编码，存进码流的真实 Y 值(ffmpeg实测)
+# range   black white gray
+full      0     255   128
+limited   16    235   126

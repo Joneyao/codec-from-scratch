@@ -1,0 +1,60 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="colorpipe" name="color-pipeline">
+    <mxGraphModel dx="900" dy="600" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="440" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="RGB 图像的颜色被&quot;掰开&quot;成 亮度 + 两路色度，色度再偷偷缩小" style="text;html=1;fontSize=15;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="820" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="rgb" value="原始 RGB 像素&#10;R,G,B 各 8 bit&#10;三者高度相关" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="150" width="150" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="transform" value="RGB → YCbCr&#10;（BT.601 系数）&#10;线性组合，无损" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="270" y="150" width="150" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="y" value="Y 亮度&#10;全分辨率保留&#10;（细节都在这）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="500" y="70" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cb" value="Cb 蓝色度&#10;4:2:0 抽样&#10;尺寸砍到 1/4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="500" y="160" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cr" value="Cr 红色度&#10;4:2:0 抽样&#10;尺寸砍到 1/4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="500" y="250" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="out" value="送入 DCT / 量化&#10;（后续文章）&#10;数据量已先省一半" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="720" y="150" width="140" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="endArrow=classic;html=1;strokeColor=#333333;" edge="1" parent="1" source="rgb" target="transform">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="endArrow=classic;html=1;strokeColor=#82b366;" edge="1" parent="1" source="transform" target="y">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="endArrow=classic;html=1;strokeColor=#d6b656;" edge="1" parent="1" source="transform" target="cb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="endArrow=classic;html=1;strokeColor=#d6b656;" edge="1" parent="1" source="transform" target="cr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="endArrow=classic;html=1;strokeColor=#9673a6;" edge="1" parent="1" source="y" target="out">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="endArrow=classic;html=1;strokeColor=#9673a6;" edge="1" parent="1" source="cb" target="out">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="endArrow=classic;html=1;strokeColor=#9673a6;" edge="1" parent="1" source="cr" target="out">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
